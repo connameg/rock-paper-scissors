@@ -1,8 +1,8 @@
-var victory = "";                                                          //declare global variables to store results
-var computerChooses;                                                       //and both choices
+var victory;                                                          //declare global variables
+var computerChooses;                                                  
 var youChoose;
 
-function rockPaperScissors() {                                                     //outer wrapper function
+function rockPaperScissors() {                                                     //this function contains the game
     
 var userChoice = prompt("Do you choose ROCK, PAPER or SCISSORS?").toLowerCase();   //prompt user for input
     
@@ -15,7 +15,7 @@ if (computerChoice < 0.34) {                                                    
 	computerChoice = "scissors";
 	
 } 
-    
+victory = "";                                                              //displays results 
 computerChooses = "COMPUTER: " + computerChoice.toUpperCase();             //tells user what the computer chose
 youChoose = "YOU: " + userChoice.toUpperCase();                            //reminds user of their own choice
 
@@ -48,7 +48,7 @@ var compare = function(choice1, choice2) {                                 //com
             victory += "The computer chose paper. You win!";               //you win!     
         }
         else {                                                             //but if comp chooses rock,
-            victory += "The computer chose rock. You lose....";            //you lose.
+            victory += "The computer chose rock. You lose...";            //you lose.
         }
     }  
     
@@ -56,15 +56,16 @@ var compare = function(choice1, choice2) {                                 //com
         //if you don't input ROCK, PAPER, OR SCISSORS, call the function to prompt the user again
         rockPaperScissors();
     }
-};
+};     //end compare functioin
 
-compare(userChoice, computerChoice);  //call the nested function
+compare(userChoice, computerChoice);  //call the nested function  
+} //end rockPaperScissors function
 
-}
+rockPaperScissors();   //call function to start the game
+writeResults(); //writes results to page
 
-rockPaperScissors();   //call function to start game
-
-//write the results to the page using DOM manipulation
+function writeResults(){
+ //write the results to the page using DOM manipulation
 var placement = document.getElementById("results");            //location of parent element, the inner <div>
 
 var myChoice = document.createElement("p");                    //create a <p> node
@@ -77,11 +78,24 @@ var results = document.createElement("p");                     //create another 
 results.setAttribute("class", "comp");                         //give it the class "comp"
 var resultsContent = document.createTextNode(computerChooses); //give it a text node
 results.appendChild(resultsContent);                           //attach text node to <p>
-placement.appendChild(results);                                //attach p to parent <div>
+placement.appendChild(results);                                //attach <p> to parent <div>
 
 var victoryText = document.createElement("p");                 //create yet another <p>
 victoryText.setAttribute("class", "victory");                  //give it the class "victory"
-var victoryTextContent = document.createTextNode(victory);     //give it a test node
+var victoryTextContent = document.createTextNode(victory);     //give it a text node
 victoryText.appendChild(victoryTextContent);                   //attach text node to <p>
-placement.appendChild(victoryText);                            //attach <p> to parent <div>
+placement.appendChild(victoryText);                            //attach <p> to parent <div>   
+} //end writeResults function
 
+function runAgain() {                                          //changes text that user sees
+    rockPaperScissors();                                       //play through the game again
+    //change text to display values from most recent game
+    var one = document.getElementsByClassName("you")[0].textContent = youChoose;
+    var two = document.getElementsByClassName("comp")[0].textContent = computerChooses;
+    var three = document.getElementsByClassName("victory")[0].textContent = victory;  
+}                                                              //end runAgain function
+
+
+
+var playAgain = document.getElementById("play_again");         //location of Play Again button
+playAgain.addEventListener("click", runAgain, false);          //call runAgain when user clicks button
